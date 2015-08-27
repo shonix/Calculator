@@ -14,11 +14,16 @@ public class Operation {
         this.action = event;
     }
 
-    public static void Clear(){
+    public static void clear(){
         Main.value = 0;
         Main.main.getChildren().filtered((Node) ->{return Node.getId()=="txtInput";}).forEach(Node -> {
             ((TextField) Node).setText(Float.toString(0));
         });
 
+    }
+    public static int add(int a){
+        int b = a;
+        int result = a + b;
+        return result;
     }
 }

@@ -11,35 +11,38 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.VBoxBuilder;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
 
 
 public class Main extends Application {
 
     //Action upon click on button (yeah i know, what is this even)
     EventHandler<ActionEvent> numAction = (event)-> {
+        numInput = 0;
         int textChar = ((int)((Button)event.getSource()).getText().charAt(0))-48;
-        value = value*10+textChar;
+        numInput = textChar;
         updateOnView();
     };
 
     EventHandler<ActionEvent>operatorAction = (event) -> {
         operation = (((Button)event.getSource()).getText().charAt(0));
-        System.out.print(operation);
         updateOperatorView();
     };
 
     //Fields
-    static float value = 0;
+    static int numInput = 0;
+    static int value = 0;
     static char operation;
     Button btnClose = new Button();
     TextField txtInput = new TextField();
+
+    int[] tmp = new int[2];
 
     //Buttons
     char[] operators = new char[]{'+','-','*','/','=','C',','};
@@ -60,27 +63,23 @@ public class Main extends Application {
     }
 
     //do we even know what we are doing anymore? jonas?
-    private static void updateOnView(){
-        main.getChildren().filtered((Node) ->{return Node.getId()=="txtInput";}).forEach(Node -> {
-            ((TextField) Node).setText(Float.toString(value));
-        });
-
+    private void updateOnView(){
+        setTxtInput(Integer.toString(numInput));
     }
-    private static void updateOperatorView(){
-        if(operation!='C'&&operation!='=') {
-            float tmp = value;
-            value=0;
-            main.getChildren().filtered((Node) -> {
-                return Node.getId() == "txtInput";
-            }).forEach(Node -> {
-                ((TextField) Node).setText(Character.toString(operation));
-            });
-        }
-        else if(operation == 'C'){
-            Operation.Clear();
-        }
-        else if(operation == '='){
 
+    private void updateOperatorView(){
+        switch(operation){
+            case 'C':
+                    tmp [0]=0;tmp[1]=0;
+                    Operation.clear();
+                    break;
+
+            case '+':   value = Operation.add(numInput);
+                        setTxtInput(Integer.toString(value));
+
+
+            case '=':   setTxtInput(Integer.toString(value));
+                        break;
         }
     }
 
@@ -139,5 +138,9 @@ public class Main extends Application {
         primaryStage.setTitle("Calculator");
         primaryStage.setScene(sceneMain);
         primaryStage.show();
+    }
+
+    private void setTxtInput(String s){
+        main.getChildren().filtered((Node) -> {return Node.getId() == "txtInput"; }).forEach(Node -> {((TextField) Node).setText(s);});
     }
 }
