@@ -24,13 +24,20 @@ public class Main extends Application {
 
     //Action upon click on button (yeah i know, what is this even)
     EventHandler<ActionEvent> numAction = (event)-> {
-        int wtfIsThis = ((int)((Button)event.getSource()).getText().charAt(0))-48;
-        value = value*10+wtfIsThis;
+        int textChar = ((int)((Button)event.getSource()).getText().charAt(0))-48;
+        value = value*10+textChar;
         updateOnView();
+    };
+
+    EventHandler<ActionEvent>operatorAction = (event) -> {
+        operation = (((Button)event.getSource()).getText().charAt(0));
+        System.out.print(operation);
+        updateOperatorView();
     };
 
     //Fields
     static float value = 0;
+    static char operation;
     Button btnClose = new Button();
     TextField txtInput = new TextField();
 
@@ -54,8 +61,27 @@ public class Main extends Application {
 
     //do we even know what we are doing anymore? jonas?
     private static void updateOnView(){
-        main.getChildren().filtered((Node) ->{return Node.getId()=="txtInput";}).forEach(Node->{((TextField)Node).setText(Float.toString(value));});
+        main.getChildren().filtered((Node) ->{return Node.getId()=="txtInput";}).forEach(Node -> {
+            ((TextField) Node).setText(Float.toString(value));
+        });
 
+    }
+    private static void updateOperatorView(){
+        if(operation!='C'&&operation!='=') {
+            float tmp = value;
+            value=0;
+            main.getChildren().filtered((Node) -> {
+                return Node.getId() == "txtInput";
+            }).forEach(Node -> {
+                ((TextField) Node).setText(Character.toString(operation));
+            });
+        }
+        else if(operation == 'C'){
+            Operation.Clear();
+        }
+        else if(operation == '='){
+
+        }
     }
 
     @Override
@@ -66,6 +92,7 @@ public class Main extends Application {
         for(int i = 0; i < operators.length; i++){
             operatorBtns[i] = new Button (Character.toString(operators[i]));
             operatorBtns[i].getStyleClass().add("operatorBtn");
+            operatorBtns[i].setOnAction(operatorAction);
         }
         //Create Number buttons
         for(int i = 0; i < numBtns.length; i++){
