@@ -17,46 +17,41 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.Arrays;
-
 
 public class Main extends Application {
 
     //Action upon click on button (yeah i know, what is this even)
     EventHandler<ActionEvent> numAction = (event)-> {
-        numInput = 0;
         int textChar = ((int)((Button)event.getSource()).getText().charAt(0))-48;
-        numInput = textChar;
+        numInput = numInput*10+ textChar;
         updateOnView();
     };
 
-    EventHandler<ActionEvent>operatorAction = (event) -> {
-        operation = (((Button)event.getSource()).getText().charAt(0));
-        updateOperatorView();
-    };
-
     //Fields
-    static int numInput = 0;
-    static int value = 0;
+    static float numInput = 0;
+    static float tmp = 0;
+    static EventHandler<ActionEvent> actionOperation = null;
     static char operation;
     Button btnClose = new Button();
     TextField txtInput = new TextField();
 
-    int[] tmp = new int[2];
-
-    //Buttons
-    char[] operators = new char[]{'+','-','*','/','=','C',','};
+    //Buttons - do we even know?
+    Operation[] operators = new Operation[]{
+            new Operation('+',(event)->{PerformAction(numInput);numInput = 0;actionOperation = (event1) ->{tmp = numInput + tmp;}; updateOnView();}),
+            new Operation('-',(event)->{PerformAction(numInput);numInput = 0;actionOperation = (event1) ->{tmp = numInput - tmp;}; updateOnView();}),
+            new Operation('*',(event)->{PerformAction(numInput);numInput = 0;actionOperation = (event1) ->{tmp = numInput * tmp;}; updateOnView();}),
+            new Operation('/',(event)->{PerformAction(numInput);numInput = 0;actionOperation = (event1) ->{tmp = numInput / tmp;}; updateOnView();}),
+            new Operation('=',(event)->{PerformAction(numInput); if (actionOperation==null){tmp =numInput; }else{}numInput = 0; actionOperation = null; updateOnView(); }),
+            new Operation('C',(event)->{tmp =0; numInput = 0; actionOperation = null; updateOnView();})};
     Button[] operatorBtns = new Button[operators.length];
     Button[] numBtns = new Button[10];
-    String[] layout = new String[]{"789/","456*","123-","0,C+="};
+    String[] layout = new String[]{"789/","456*","123-","0C+="};
 
     //Layouts
     static VBox main = new VBox();
-    GridPane gridTop = new GridPane();
+    GridPane gridBot = new GridPane();
     GridPane grid = new GridPane();
-
-    Scene sceneMain = new Scene(main,300,300);
-
+    Scene sceneMain = new Scene(main,240,230);
 
     public static void main(String[]args){
         launch();
@@ -64,34 +59,19 @@ public class Main extends Application {
 
     //do we even know what we are doing anymore? jonas?
     private void updateOnView(){
-        setTxtInput(Integer.toString(numInput));
-    }
-
-    private void updateOperatorView(){
-        switch(operation){
-            case 'C':
-                    tmp [0]=0;tmp[1]=0;
-                    Operation.clear();
-                    break;
-
-            case '+':   value = Operation.add(numInput);
-                        setTxtInput(Integer.toString(value));
-
-
-            case '=':   setTxtInput(Integer.toString(value));
-                        break;
-        }
+        setTxtInput(Float.toString((numInput==0? tmp :numInput)));
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         main.getStylesheets().add("Styled.css");
 
+
         //Create operator buttons
         for(int i = 0; i < operators.length; i++){
-            operatorBtns[i] = new Button (Character.toString(operators[i]));
+            operatorBtns[i] = new Button (Character.toString(operators[i].value));
             operatorBtns[i].getStyleClass().add("operatorBtn");
-            operatorBtns[i].setOnAction(operatorAction);
+            operatorBtns[i].setOnAction(operators[i].action);
         }
         //Create Number buttons
         for(int i = 0; i < numBtns.length; i++){
@@ -110,7 +90,7 @@ public class Main extends Application {
                 else{
                     int k = 0;
                     for(; k < operators.length; k++){
-                        if(operators[k]==layout[i].charAt(j)){
+                        if(operators[k].value==layout[i].charAt(j)){
                             break;
                         }
                     }
@@ -127,17 +107,32 @@ public class Main extends Application {
                 }
             }
         }
+        //close button
+        btnClose.getStyleClass().add("btnClose");
+        btnClose.setText("Close");
+        btnClose.setOnAction((event)->primaryStage.close());
+        gridBot.add(btnClose,2,1);
+
         //Properties for textfield
         txtInput.setEditable(false);
         txtInput.setId("txtInput");
 
         //Add everything to main layout
-        main.getChildren().addAll(gridTop,txtInput,grid);
+        main.getChildren().addAll(txtInput,grid,gridBot);
 
         //Select start scene, and shows the stage
         primaryStage.setTitle("Calculator");
         primaryStage.setScene(sceneMain);
         primaryStage.show();
+    }
+
+    static void PerformAction(float cykablyatidinahuit){
+        if(actionOperation!=null){
+            actionOperation.handle(null);
+        }
+        else{
+            tmp =cykablyatidinahuit;
+        }
     }
 
     private void setTxtInput(String s){
