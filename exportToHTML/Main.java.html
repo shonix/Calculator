@@ -1,0 +1,166 @@
+<html>
+<head>
+<title>Main.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+.s0 { color: rgb(128,128,128); font-style: italic; }
+.s1 { }
+.s2 { color: rgb(0,0,128); font-weight: bold; }
+.s3 { color: rgb(204,120,50); }
+.s4 { color: rgb(0,0,255); }
+.s5 { color: rgb(0,128,0); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+Main.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+
+<span class="s0">/** 
+ * Created by Shonix on 26-08-2015. 
+ */</span><span class="s1"> 
+ 
+</span><span class="s2">import </span><span class="s1">javafx.application.Application</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.event.ActionEvent</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.event.EventHandler</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.geometry.Insets</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.geometry.Pos</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.scene.Scene</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.scene.control.Button</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.scene.control.TextField</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.scene.layout.GridPane</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.scene.layout.VBox</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.scene.layout.VBoxBuilder</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.scene.text.Text</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.stage.Modality</span><span class="s3">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">javafx.stage.Stage</span><span class="s3">;</span><span class="s1"> 
+ 
+ 
+</span><span class="s2">public class </span><span class="s1">Main </span><span class="s2">extends </span><span class="s1">Application { 
+ 
+    </span><span class="s0">//Action upon click on button (yeah i know, what is this even)</span><span class="s1"> 
+    EventHandler&lt;ActionEvent&gt; numAction = (event)-&gt; { 
+        </span><span class="s2">int </span><span class="s1">textChar = ((</span><span class="s2">int</span><span class="s1">)((Button)event.getSource()).getText().charAt(</span><span class="s4">0</span><span class="s1">))-</span><span class="s4">48</span><span class="s3">;</span><span class="s1"> 
+        numInput = numInput*</span><span class="s4">10</span><span class="s1">+ textChar</span><span class="s3">;</span><span class="s1"> 
+        updateOnView()</span><span class="s3">;</span><span class="s1"> 
+    }</span><span class="s3">;</span><span class="s1"> 
+ 
+    </span><span class="s0">//Fields</span><span class="s1"> 
+    </span><span class="s2">static float </span><span class="s1">numInput = </span><span class="s4">0</span><span class="s3">;</span><span class="s1"> 
+    </span><span class="s2">static float </span><span class="s1">tmp = </span><span class="s4">0</span><span class="s3">;</span><span class="s1"> 
+    </span><span class="s2">static </span><span class="s1">EventHandler&lt;ActionEvent&gt; actionOperation = </span><span class="s2">null</span><span class="s3">;</span><span class="s1"> 
+    </span><span class="s2">static char </span><span class="s1">operation</span><span class="s3">;</span><span class="s1"> 
+    Button btnClose = </span><span class="s2">new </span><span class="s1">Button()</span><span class="s3">;</span><span class="s1"> 
+    TextField txtInput = </span><span class="s2">new </span><span class="s1">TextField()</span><span class="s3">;</span><span class="s1"> 
+ 
+    </span><span class="s0">//Buttons - do we even know?</span><span class="s1"> 
+    Operation[] operators = </span><span class="s2">new </span><span class="s1">Operation[]{ 
+            </span><span class="s2">new </span><span class="s1">Operation(</span><span class="s5">'+'</span><span class="s3">,</span><span class="s1">(event)-&gt;{PerformAction(numInput)</span><span class="s3">;</span><span class="s1">numInput = </span><span class="s4">0</span><span class="s3">;</span><span class="s1">actionOperation = (event1) -&gt;{tmp = numInput + tmp</span><span class="s3">;</span><span class="s1">}</span><span class="s3">; </span><span class="s1">updateOnView()</span><span class="s3">;</span><span class="s1">})</span><span class="s3">,</span><span class="s1"> 
+            </span><span class="s2">new </span><span class="s1">Operation(</span><span class="s5">'-'</span><span class="s3">,</span><span class="s1">(event)-&gt;{PerformAction(numInput)</span><span class="s3">;</span><span class="s1">numInput = </span><span class="s4">0</span><span class="s3">;</span><span class="s1">actionOperation = (event1) -&gt;{tmp = tmp - numInput</span><span class="s3">;</span><span class="s1">}</span><span class="s3">; </span><span class="s1">updateOnView()</span><span class="s3">;</span><span class="s1">})</span><span class="s3">,</span><span class="s1"> 
+            </span><span class="s2">new </span><span class="s1">Operation(</span><span class="s5">'*'</span><span class="s3">,</span><span class="s1">(event)-&gt;{PerformAction(numInput)</span><span class="s3">;</span><span class="s1">numInput = </span><span class="s4">0</span><span class="s3">;</span><span class="s1">actionOperation = (event1) -&gt;{tmp = numInput * tmp</span><span class="s3">;</span><span class="s1">}</span><span class="s3">; </span><span class="s1">updateOnView()</span><span class="s3">;</span><span class="s1">})</span><span class="s3">,</span><span class="s1"> 
+            </span><span class="s2">new </span><span class="s1">Operation(</span><span class="s5">'/'</span><span class="s3">,</span><span class="s1">(event)-&gt;{PerformAction(numInput)</span><span class="s3">;</span><span class="s1">numInput = </span><span class="s4">0</span><span class="s3">;</span><span class="s1">actionOperation = (event1) -&gt;{tmp = tmp / numInput</span><span class="s3">;</span><span class="s1">}</span><span class="s3">; </span><span class="s1">updateOnView()</span><span class="s3">;</span><span class="s1">})</span><span class="s3">,</span><span class="s1"> 
+            </span><span class="s2">new </span><span class="s1">Operation(</span><span class="s5">'='</span><span class="s3">,</span><span class="s1">(event)-&gt;{PerformAction(numInput)</span><span class="s3">; </span><span class="s2">if </span><span class="s1">(actionOperation==</span><span class="s2">null</span><span class="s1">){tmp =numInput</span><span class="s3">; </span><span class="s1">}</span><span class="s2">else</span><span class="s1">{}numInput = </span><span class="s4">0</span><span class="s3">; </span><span class="s1">actionOperation = </span><span class="s2">null</span><span class="s3">; </span><span class="s1">updateOnView()</span><span class="s3">; </span><span class="s1">})</span><span class="s3">,</span><span class="s1"> 
+            </span><span class="s2">new </span><span class="s1">Operation(</span><span class="s5">'C'</span><span class="s3">,</span><span class="s1">(event)-&gt;{tmp =</span><span class="s4">0</span><span class="s3">; </span><span class="s1">numInput = </span><span class="s4">0</span><span class="s3">; </span><span class="s1">actionOperation = </span><span class="s2">null</span><span class="s3">; </span><span class="s1">updateOnView()</span><span class="s3">;</span><span class="s1">})}</span><span class="s3">;</span><span class="s1"> 
+    Button[] operatorBtns = </span><span class="s2">new </span><span class="s1">Button[operators.length]</span><span class="s3">;</span><span class="s1"> 
+    Button[] numBtns = </span><span class="s2">new </span><span class="s1">Button[</span><span class="s4">10</span><span class="s1">]</span><span class="s3">;</span><span class="s1"> 
+    String[] layout = </span><span class="s2">new </span><span class="s1">String[]{</span><span class="s5">&quot;789/&quot;</span><span class="s3">,</span><span class="s5">&quot;456*&quot;</span><span class="s3">,</span><span class="s5">&quot;123-&quot;</span><span class="s3">,</span><span class="s5">&quot;0C+=&quot;</span><span class="s1">}</span><span class="s3">;</span><span class="s1"> 
+ 
+    </span><span class="s0">//Layouts</span><span class="s1"> 
+    </span><span class="s2">static </span><span class="s1">VBox main = </span><span class="s2">new </span><span class="s1">VBox()</span><span class="s3">;</span><span class="s1"> 
+    GridPane gridBot = </span><span class="s2">new </span><span class="s1">GridPane()</span><span class="s3">;</span><span class="s1"> 
+    GridPane grid = </span><span class="s2">new </span><span class="s1">GridPane()</span><span class="s3">;</span><span class="s1"> 
+    Scene sceneMain = </span><span class="s2">new </span><span class="s1">Scene(main</span><span class="s3">,</span><span class="s4">240</span><span class="s3">,</span><span class="s4">230</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+ 
+    </span><span class="s2">public static void </span><span class="s1">main(String[]args){ 
+        launch()</span><span class="s3">;</span><span class="s1"> 
+    } 
+ 
+    </span><span class="s0">//do we even know what we are doing anymore? jonas?</span><span class="s1"> 
+    </span><span class="s2">private void </span><span class="s1">updateOnView(){ 
+        setTxtInput(Float.toString((numInput==</span><span class="s4">0</span><span class="s1">? tmp :numInput)))</span><span class="s3">;</span><span class="s1"> 
+    } 
+ 
+    @Override 
+    </span><span class="s2">public void </span><span class="s1">start(Stage primaryStage) </span><span class="s2">throws </span><span class="s1">Exception { 
+        main.getStylesheets().add(</span><span class="s5">&quot;Styled.css&quot;</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+ 
+ 
+        </span><span class="s0">//Create operator buttons</span><span class="s1"> 
+        </span><span class="s2">for</span><span class="s1">(</span><span class="s2">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s3">; </span><span class="s1">i &lt; operators.length</span><span class="s3">; </span><span class="s1">i++){ 
+            operatorBtns[i] = </span><span class="s2">new </span><span class="s1">Button (Character.toString(operators[i].value))</span><span class="s3">;</span><span class="s1"> 
+            operatorBtns[i].getStyleClass().add(</span><span class="s5">&quot;operatorBtn&quot;</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+            operatorBtns[i].setOnAction(operators[i].action)</span><span class="s3">;</span><span class="s1"> 
+        } 
+        </span><span class="s0">//Create Number buttons</span><span class="s1"> 
+        </span><span class="s2">for</span><span class="s1">(</span><span class="s2">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s3">; </span><span class="s1">i &lt; numBtns.length</span><span class="s3">; </span><span class="s1">i++){ 
+            numBtns[i] = </span><span class="s2">new </span><span class="s1">Button(Integer.toString(i))</span><span class="s3">;</span><span class="s1"> 
+            numBtns[i].getStyleClass().add(</span><span class="s5">&quot;numBtn&quot;</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+            numBtns[i].setOnAction(numAction)</span><span class="s3">;</span><span class="s1"> 
+ 
+        } 
+        </span><span class="s0">//Make an editable layout (see String array in fields to edit)</span><span class="s1"> 
+        </span><span class="s2">for</span><span class="s1">(</span><span class="s2">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s3">; </span><span class="s1">i &lt; layout.length</span><span class="s3">; </span><span class="s1">i++){ 
+            </span><span class="s2">for</span><span class="s1">(</span><span class="s2">int </span><span class="s1">j = </span><span class="s4">0</span><span class="s3">; </span><span class="s1">j &lt; layout[i].length()</span><span class="s3">; </span><span class="s1">j++){ 
+                </span><span class="s2">int </span><span class="s1">q = (</span><span class="s2">int</span><span class="s1">)layout[i].charAt(j)</span><span class="s3">;</span><span class="s1"> 
+                </span><span class="s2">if </span><span class="s1">(q &lt; </span><span class="s4">58 </span><span class="s1">&amp;&amp; q&gt; </span><span class="s4">47</span><span class="s1">) { 
+                    grid.add(numBtns[q - </span><span class="s4">48</span><span class="s1">]</span><span class="s3">, </span><span class="s1">j</span><span class="s3">, </span><span class="s1">i)</span><span class="s3">;</span><span class="s1"> 
+                } 
+                </span><span class="s2">else</span><span class="s1">{ 
+                    </span><span class="s2">int </span><span class="s1">k = </span><span class="s4">0</span><span class="s3">;</span><span class="s1"> 
+                    </span><span class="s2">for</span><span class="s1">(</span><span class="s3">; </span><span class="s1">k &lt; operators.length</span><span class="s3">; </span><span class="s1">k++){ 
+                        </span><span class="s2">if</span><span class="s1">(operators[k].value==layout[i].charAt(j)){ 
+                            </span><span class="s2">break</span><span class="s3">;</span><span class="s1"> 
+                        } 
+                    } 
+                    </span><span class="s2">try </span><span class="s1">{ 
+                        grid.add(operatorBtns[k]</span><span class="s3">, </span><span class="s1">j</span><span class="s3">, </span><span class="s1">i)</span><span class="s3">;</span><span class="s1"> 
+                    }</span><span class="s2">catch </span><span class="s1">(Exception e){ 
+                       Stage dialogStage = </span><span class="s2">new </span><span class="s1">Stage()</span><span class="s3">;</span><span class="s1"> 
+                        dialogStage.initModality(Modality.WINDOW_MODAL)</span><span class="s3">;</span><span class="s1"> 
+                        Button okbtn</span><span class="s3">;</span><span class="s1"> 
+                        dialogStage.setScene(</span><span class="s2">new </span><span class="s1">Scene(VBoxBuilder.create().children(</span><span class="s2">new </span><span class="s1">Text(</span><span class="s5">&quot;dun goofed&quot;</span><span class="s1">)</span><span class="s3">, </span><span class="s1">okbtn = </span><span class="s2">new </span><span class="s1">Button(</span><span class="s5">&quot;Ok.&quot;</span><span class="s1">)).alignment(Pos.CENTER).padding(</span><span class="s2">new </span><span class="s1">Insets(</span><span class="s4">5</span><span class="s1">)).build()))</span><span class="s3">;</span><span class="s1"> 
+                        okbtn.setOnAction((event)-&gt;dialogStage.close())</span><span class="s3">;</span><span class="s1"> 
+                        dialogStage.show()</span><span class="s3">;</span><span class="s1"> 
+                    } 
+                } 
+            } 
+        } 
+        </span><span class="s0">//close button</span><span class="s1"> 
+        btnClose.getStyleClass().add(</span><span class="s5">&quot;btnClose&quot;</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+        btnClose.setText(</span><span class="s5">&quot;Close&quot;</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+        btnClose.setOnAction((event)-&gt;primaryStage.close())</span><span class="s3">;</span><span class="s1"> 
+        gridBot.add(btnClose</span><span class="s3">,</span><span class="s4">2</span><span class="s3">,</span><span class="s4">1</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+ 
+        </span><span class="s0">//Properties for textfield</span><span class="s1"> 
+        txtInput.setEditable(</span><span class="s2">false</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+        txtInput.setId(</span><span class="s5">&quot;txtInput&quot;</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+ 
+        </span><span class="s0">//Add everything to main layout</span><span class="s1"> 
+        main.getChildren().addAll(txtInput</span><span class="s3">,</span><span class="s1">grid</span><span class="s3">,</span><span class="s1">gridBot)</span><span class="s3">;</span><span class="s1"> 
+ 
+        </span><span class="s0">//Select start scene, and shows the stage</span><span class="s1"> 
+        primaryStage.setTitle(</span><span class="s5">&quot;Calculator&quot;</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+        primaryStage.setScene(sceneMain)</span><span class="s3">;</span><span class="s1"> 
+        primaryStage.show()</span><span class="s3">;</span><span class="s1"> 
+    } 
+ 
+    </span><span class="s2">static void </span><span class="s1">PerformAction(</span><span class="s2">float </span><span class="s1">cykablyatidinahuit){ 
+        </span><span class="s2">if</span><span class="s1">(actionOperation!=</span><span class="s2">null</span><span class="s1">){ 
+            actionOperation.handle(</span><span class="s2">null</span><span class="s1">)</span><span class="s3">;</span><span class="s1"> 
+        } 
+        </span><span class="s2">else</span><span class="s1">{ 
+            tmp = cykablyatidinahuit</span><span class="s3">;</span><span class="s1"> 
+        } 
+    } 
+ 
+    </span><span class="s2">private void </span><span class="s1">setTxtInput(String s){ 
+        main.getChildren().filtered((Node) -&gt; {</span><span class="s2">return </span><span class="s1">Node.getId() == </span><span class="s5">&quot;txtInput&quot;</span><span class="s3">; </span><span class="s1">}).forEach(Node -&gt; {((TextField) Node).setText(s)</span><span class="s3">;</span><span class="s1">})</span><span class="s3">;</span><span class="s1"> 
+    } 
+} 
+</span></pre>
+</body>
+</html>
