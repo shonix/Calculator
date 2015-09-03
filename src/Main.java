@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
+//how do i commit?
 public class Main extends Application {
 
     //Action upon click on button (yeah i know, what is this even)
