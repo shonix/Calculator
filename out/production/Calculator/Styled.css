@@ -1,2 +1,2 @@
 .numBtn,.operatorBtn {-fx-min-width: 60px; -fx-min-height: 40px; -fx-max-width: 60px;-fx-max-height: 40px;-fx-margin: 10px,10px;}
-.btnClose { -fx-min-width: 100px; -fx-min-height: 45px; -fx-max-width: 100px;-fx-max-height: 45px;}
+.btnClose { -fx-min-width: 100px; -fx-min-height: 45px; -fx-max-width: 100px;-fx-max-height: 45px; -fx-background-color: red;-fx-text-fill: white;}

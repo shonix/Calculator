@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
+//how do i commit?
 public class Main extends Application {
 
     //Action upon click on button (yeah i know, what is this even)
@@ -38,9 +38,9 @@ public class Main extends Application {
     //Buttons - do we even know?
     Operation[] operators = new Operation[]{
             new Operation('+',(event)->{PerformAction(numInput);numInput = 0;actionOperation = (event1) ->{tmp = numInput + tmp;}; updateOnView();}),
-            new Operation('-',(event)->{PerformAction(numInput);numInput = 0;actionOperation = (event1) ->{tmp = numInput - tmp;}; updateOnView();}),
+            new Operation('-',(event)->{PerformAction(numInput);numInput = 0;actionOperation = (event1) ->{tmp = tmp - numInput;}; updateOnView();}),
             new Operation('*',(event)->{PerformAction(numInput);numInput = 0;actionOperation = (event1) ->{tmp = numInput * tmp;}; updateOnView();}),
-            new Operation('/',(event)->{PerformAction(numInput);numInput = 0;actionOperation = (event1) ->{tmp = numInput / tmp;}; updateOnView();}),
+            new Operation('/',(event)->{PerformAction(numInput);numInput = 0;actionOperation = (event1) ->{tmp = tmp / numInput;}; updateOnView();}),
             new Operation('=',(event)->{PerformAction(numInput); if (actionOperation==null){tmp =numInput; }else{}numInput = 0; actionOperation = null; updateOnView(); }),
             new Operation('C',(event)->{tmp =0; numInput = 0; actionOperation = null; updateOnView();})};
     Button[] operatorBtns = new Button[operators.length];
@@ -51,7 +51,7 @@ public class Main extends Application {
     static VBox main = new VBox();
     GridPane gridBot = new GridPane();
     GridPane grid = new GridPane();
-    Scene sceneMain = new Scene(main,240,230);
+    Scene sceneMain = new Scene(main,275,270);
 
     public static void main(String[]args){
         launch();
@@ -65,20 +65,23 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         main.getStylesheets().add("Styled.css");
-
+        grid.setHgap(5); //horizontal gap in pixels => that's what you are asking for
+        grid.setVgap(5); //vertical gap in pixels
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        gridBot.setPadding(new Insets(0,0,0,10));
 
         //Create operator buttons
         for(int i = 0; i < operators.length; i++){
             operatorBtns[i] = new Button (Character.toString(operators[i].value));
             operatorBtns[i].getStyleClass().add("operatorBtn");
             operatorBtns[i].setOnAction(operators[i].action);
+
         }
         //Create Number buttons
         for(int i = 0; i < numBtns.length; i++){
             numBtns[i] = new Button(Integer.toString(i));
             numBtns[i].getStyleClass().add("numBtn");
             numBtns[i].setOnAction(numAction);
-
         }
         //Make an editable layout (see String array in fields to edit)
         for(int i = 0; i < layout.length; i++){
@@ -131,7 +134,7 @@ public class Main extends Application {
             actionOperation.handle(null);
         }
         else{
-            tmp =cykablyatidinahuit;
+            tmp = cykablyatidinahuit;
         }
     }
 
